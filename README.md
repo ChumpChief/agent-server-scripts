@@ -32,7 +32,7 @@ This installs `curl`, `git`, Node.js (via nvm), microsandbox, and clones this re
 ./setup_host.sh
 ```
 
-Updates system packages, then installs `curl`, `git`, Node.js (via nvm, latest LTS), and microsandbox globally. Also clones this repo into `~/git/agent-server-scripts`. Re-run anytime to update.
+Updates system packages, then installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Also clones this repo into `~/git/agent-server-scripts` and creates `~/bin` (added to PATH). Re-run anytime to update.
 
 ### 2. Provision a sandbox
 

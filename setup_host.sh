@@ -29,6 +29,14 @@ sudo apt-get autoremove -y -qq 2>/dev/null || true
 # Start SSH service
 sudo systemctl enable --now ssh 2>/dev/null || true
 
+# Create ~/bin for user scripts and ensure it's on PATH
+mkdir -p ~/bin
+if ! grep -q 'export PATH="$HOME/bin:$PATH"' ~/.bashrc 2>/dev/null; then
+  echo '' >> ~/.bashrc
+  echo '# User scripts directory' >> ~/.bashrc
+  echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+fi
+
 # 2. Install / update nvm
 export NVM_DIR="$HOME/.nvm"
 
