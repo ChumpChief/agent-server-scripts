@@ -12,13 +12,15 @@ echo "System packages updated."
 # 1. Install curl (needed for nvm install) and git
 if ! command -v curl &>/dev/null || ! command -v git &>/dev/null; then
   echo "Installing curl and git..."
-  sudo apt-get update -qq
   sudo apt-get install -y -qq curl git
   echo "curl and git installed."
 else
   echo "curl is already installed: $(curl --version | head -1)"
   echo "git is already installed: $(git --version)"
 fi
+
+# Clean up orphaned packages from upgrade and install
+sudo apt-get autoremove -y -qq 2>/dev/null || true
 
 # 2. Install / update nvm
 export NVM_DIR="$HOME/.nvm"
@@ -40,7 +42,7 @@ fi
 # 3. Install / update Node.js LTS and set as default
 echo "Installing latest Node.js LTS..."
 nvm install --lts
-nvm alias default "$(nvm version-remote-lts)"
+nvm alias default lts/*
 nvm use default
 echo "Node.js $(node --version) installed and set as default."
 
