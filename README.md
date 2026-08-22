@@ -19,25 +19,27 @@ Host Machine ──(microsandbox)──► Sandboxed Dev Agent
 On a bare host, bootstrap everything in one line:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/setup_host.sh | bash
+wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/host_scripts/setup_host.sh | bash
 ```
 
-This installs `curl`, `git`, Node.js (via nvm), microsandbox, and clones this repo into `~/git/agent-server-scripts`. After setup, `cd ~/git/agent-server-scripts` and run `./sandbox.sh provision`.
+This installs `curl`, `git`, Node.js (via nvm), microsandbox, downloads scripts from `host_scripts/` into `~/bin`, and creates `~/git` for future projects. After setup, run `. ~/.bashrc` then `sandbox.sh provision`.
 
 ## Setup
 
 ### 1. Prepare the host
 
+Run the one-liner from Quick Start, or clone the repo and run:
+
 ```bash
-./setup_host.sh
+./host_scripts/setup_host.sh
 ```
 
-Updates system packages, then installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Also clones this repo into `~/git/agent-server-scripts` and creates `~/bin` (added to PATH). Re-run anytime to update.
+Either way, this updates system packages, installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Downloads scripts from `host_scripts/` into `~/bin` (added to PATH) and creates `~/git` for future projects. Re-run anytime to update.
 
 ### 2. Provision a sandbox
 
 ```bash
-./sandbox.sh provision
+sandbox.sh provision
 ```
 
 Runs an interactive prompt that collects:
@@ -57,8 +59,8 @@ Provisioning installs the following inside the sandbox:
 ### 3. Sync code into/out of the sandbox
 
 ```bash
-./sandbox.sh sync-in <name>    # host current dir → sandbox ~/sync
-./sandbox.sh sync-out <name>   # sandbox ~/sync → host current dir
+sandbox.sh sync-in <name>    # host current dir → sandbox ~/sync
+sandbox.sh sync-out <name>   # sandbox ~/sync → host current dir
 ```
 
 ## Day-to-Day

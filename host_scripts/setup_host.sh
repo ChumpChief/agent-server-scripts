@@ -72,23 +72,28 @@ else
   exit 1
 fi
 
-# 5. Clone agent-server-scripts for local use
-echo "Cloning agent-server-scripts..."
-mkdir -p ~/git
-cd ~/git
-if [ -d "agent-server-scripts" ]; then
-  echo "agent-server-scripts already exists in ~/git"
+# 5. Download all host scripts from GitHub into ~/bin
+echo "Downloading host scripts..."
+SCRIPTS=$(curl -s https://api.github.com/repos/ChumpChief/agent-server-scripts/contents/host_scripts | jq -r '.[].name // empty')
+if [[ -z "$SCRIPTS" ]]; then
+  echo "WARNING: Could not fetch script list from GitHub. Skipping."
 else
-  git clone https://github.com/ChumpChief/agent-server-scripts.git
-  echo "Cloned to ~/git/agent-server-scripts"
+  for script in $SCRIPTS; do
+    wget -qO ~/bin/"$script" "https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/host_scripts/$script"
+    chmod +x ~/bin/"$script"
+    echo "Downloaded $script -> ~/bin/$script"
+  done
 fi
+
+# 6. Create ~/git for future projects
+mkdir -p ~/git
 
 echo ""
 echo "=== Host setup complete ==="
 echo "  Node.js:  $(node --version)"
 echo "  npm:      $(npm --version)"
 echo "  nvm:      $(nvm --version)"
-echo "  Scripts:  ~/git/agent-server-scripts"
+echo "  Scripts:  ~/bin"
 echo ""
 echo "To make these tools available in your current shell, run:"
 echo "  . ~/.bashrc"
