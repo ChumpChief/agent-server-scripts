@@ -86,7 +86,7 @@ build_create_args() {
 
     # GitHub token secret (if provided)
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-        args+=(--secret "GITHUB_TOKEN=ENV@api.github.com,*.githubusercontent.com")
+        args+=(--secret "GITHUB_TOKEN@api.github.com,*.githubusercontent.com")
     fi
 
     printf '%s\n' "${args[@]}"
@@ -106,13 +106,27 @@ prompt_config() {
     fi
 
     info "=== GitHub Token (optional) ==="
-    info "Enter GitHub classic PAT for the bot account (scopes: repo, workflow)"
-    info "(leave blank to skip, Ctrl+C to abort)"
-    read -rsp "[sandbox] Token: " GITHUB_TOKEN
-    echo
+    if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+        info "Enter GitHub classic PAT for the bot account (scopes: repo, workflow)"
+        info "(leave blank to skip, Ctrl+C to abort)"
+        read -rsp "[sandbox] Token: " GITHUB_TOKEN
+        echo
+    fi
 
     if [[ -n "${GITHUB_TOKEN}" ]]; then
-        info "GITHUB_TOKEN set -> api.github.com, *.githubusercontent.com"
+        # Validate the token is still active
+        while true; do
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/user 2>/dev/null)
+            if [[ "${HTTP_CODE}" == "200" ]]; then
+                info "GITHUB_TOKEN valid -> api.github.com, *.githubusercontent.com"
+                break
+            else
+                info "GITHUB_TOKEN invalid (HTTP ${HTTP_CODE}). Please enter a new one, or Ctrl+C to abort."
+                read -rsp "[sandbox] Token: " GITHUB_TOKEN
+                echo
+                [[ -z "${GITHUB_TOKEN}" ]] && break
+            fi
+        done
     fi
 }
 
@@ -138,6 +152,13 @@ cmd_provision() {
         error "  msb remove ${SANDBOX_NAME}               # delete the existing sandbox"
         error "  ./sandbox provision                       # create with a different name"
         exit 1
+    fi
+
+    # Export so msb can resolve GITHUB_TOKEN@host at runtime.
+    # On first run the token is only a local variable (not yet in .bashrc),
+    # so msb wouldn't inherit it otherwise.
+    if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+        export GITHUB_TOKEN
     fi
 
     # Build the create command with network rules
@@ -198,6 +219,15 @@ cmd_provision() {
           jq '.llamaServerUrl = \$url' --arg url \"\$LLM_URL\" ~/.pi/agent/settings.json > ~/.pi/agent/settings.json.tmp \\
             && mv ~/.pi/agent/settings.json.tmp ~/.pi/agent/settings.json
         "
+    fi
+
+    # Persist GITHUB_TOKEN in ~/.bashrc so msb start works after reboots
+    if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+        info "Persisting GITHUB_TOKEN in ~/.bashrc..."
+        if grep -q "export GITHUB_TOKEN=" ~/.bashrc 2>/dev/null; then
+            sed -i "/export GITHUB_TOKEN=/d" ~/.bashrc
+        fi
+        echo "export GITHUB_TOKEN=\"${GITHUB_TOKEN}\"" >> ~/.bashrc
     fi
 
     info "Sandbox '${SANDBOX_NAME}' provisioned successfully!"
