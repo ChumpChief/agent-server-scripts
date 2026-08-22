@@ -22,6 +22,8 @@ On a bare host, bootstrap everything in one line:
 wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/setup_host.sh | bash
 ```
 
+This installs `curl`, `git`, Node.js (via nvm), microsandbox, and clones this repo into `~/git/agent-server-scripts`. After setup, `cd ~/git/agent-server-scripts` and run `./sandbox.sh provision`.
+
 ## Setup
 
 ### 1. Prepare the host
@@ -30,7 +32,7 @@ wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main
 ./setup_host.sh
 ```
 
-Installs `curl`, `git`, Node.js (via nvm, latest LTS), and microsandbox globally. Re-run anytime to update.
+Installs `curl`, `git`, Node.js (via nvm, latest LTS), and microsandbox globally. Also clones this repo into `~/git/agent-server-scripts`. Re-run anytime to update.
 
 ### 2. Provision a sandbox
 

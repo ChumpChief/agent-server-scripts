@@ -49,11 +49,23 @@ else
   exit 1
 fi
 
+# 5. Clone agent-server-scripts for local use
+echo "Cloning agent-server-scripts..."
+mkdir -p ~/git
+cd ~/git
+if [ -d "agent-server-scripts" ]; then
+  echo "agent-server-scripts already exists in ~/git"
+else
+  git clone https://github.com/ChumpChief/agent-server-scripts.git
+  echo "Cloned to ~/git/agent-server-scripts"
+fi
+
 echo ""
 echo "=== Host setup complete ==="
 echo "  Node.js:  $(node --version)"
 echo "  npm:      $(npm --version)"
 echo "  nvm:      $(nvm --version)"
+echo "  Scripts:  ~/git/agent-server-scripts"
 echo ""
 echo "To make these tools available in your current shell, run:"
 echo "  . ~/.bashrc"
