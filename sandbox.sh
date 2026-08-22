@@ -86,7 +86,7 @@ build_create_args() {
 
     # GitHub token secret (if provided)
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-        args+=(--secret "GITHUB_TOKEN=ENV@api.github.com")
+        args+=(--secret "GITHUB_TOKEN=ENV@api.github.com,*.githubusercontent.com")
     fi
 
     printf '%s\n' "${args[@]}"

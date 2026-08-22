@@ -3,27 +3,23 @@ set -euo pipefail
 
 echo "=== Microsandbox Host Setup ==="
 
-# 1. Install curl (needed for nvm install)
-if ! command -v curl &>/dev/null; then
-  echo "Installing curl..."
+# 1. Install curl (needed for nvm install) and git
+if ! command -v curl &>/dev/null || ! command -v git &>/dev/null; then
+  echo "Installing curl and git..."
   sudo apt-get update -qq
-  sudo apt-get install -y -qq curl
-  echo "curl installed."
+  sudo apt-get install -y -qq curl git
+  echo "curl and git installed."
 else
   echo "curl is already installed: $(curl --version | head -1)"
+  echo "git is already installed: $(git --version)"
 fi
 
-# 2. Install nvm
-echo "Installing nvm..."
+# 2. Install / update nvm
 export NVM_DIR="$HOME/.nvm"
 
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  echo "nvm is already installed at $NVM_DIR"
-else
-  NVM_VERSION=$(curl -s https://api.github.com/repos/nvm-sh/nvm/tags | jq -r '.[0].name')
-  echo "Latest nvm version: $NVM_VERSION"
-  curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
-fi
+NVM_VERSION=$(curl -s https://api.github.com/repos/nvm-sh/nvm/tags | jq -r '.[0].name')
+echo "Latest nvm version: $NVM_VERSION"
+curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
 
 # Load nvm into the current shell
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -35,14 +31,16 @@ else
   exit 1
 fi
 
-# 3. Install latest Node LTS via nvm
+# 3. Install / update Node.js LTS and set as default
 echo "Installing latest Node.js LTS..."
 nvm install --lts
-echo "Node.js $(node --version) installed."
+nvm alias default "$(nvm version-remote-lts)"
+nvm use default
+echo "Node.js $(node --version) installed and set as default."
 
-# 4. Install microsandbox globally via npm
+# 4. Install / update microsandbox globally via npm
 echo "Installing microsandbox globally..."
-npm install -g microsandbox
+npm install -g microsandbox@latest
 
 if command -v msb &>/dev/null; then
   echo "microsandbox installed successfully: $(msb --version 2>/dev/null || echo 'unknown version')"
