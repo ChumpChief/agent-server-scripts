@@ -9,18 +9,25 @@ sudo apt-get update -qq
 sudo apt-get upgrade -y -qq
 echo "System packages updated."
 
-# 1. Install curl (needed for nvm install) and git
-if ! command -v curl &>/dev/null || ! command -v git &>/dev/null; then
-  echo "Installing curl and git..."
-  sudo apt-get install -y -qq curl git
-  echo "curl and git installed."
-else
-  echo "curl is already installed: $(curl --version | head -1)"
-  echo "git is already installed: $(git --version)"
+# 1. Install curl, git, and openssh-server
+echo "Installing curl, git, openssh-server..."
+sudo apt-get install -y -qq curl git openssh-server
+
+if command -v curl &>/dev/null; then
+  echo "curl installed: $(curl --version | head -1)"
+fi
+if command -v git &>/dev/null; then
+  echo "git installed: $(git --version)"
+fi
+if command -v sshd &>/dev/null; then
+  echo "openssh-server installed: $(sshd -V 2>&1 | head -1)"
 fi
 
 # Clean up orphaned packages from upgrade and install
 sudo apt-get autoremove -y -qq 2>/dev/null || true
+
+# Start SSH service
+sudo systemctl enable --now ssh 2>/dev/null || true
 
 # 2. Install / update nvm
 export NVM_DIR="$HOME/.nvm"
