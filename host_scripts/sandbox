@@ -29,7 +29,7 @@ OCI_UPPER_SIZE="${OCI_UPPER_SIZE:-8G}"
 BASE_NET_RULES=("allow@host" "allow@public")
 
 # Packages to install during provisioning (space-separated)
-PACKAGES="${PACKAGES:-neovim git curl jq tmux}"
+PACKAGES="${PACKAGES:-gh neovim git curl jq tmux}"
 
 # Shell to use for interactive sessions
 SHELL="${SHELL:-/bin/bash}"

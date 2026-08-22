@@ -49,7 +49,7 @@ Runs an interactive prompt that collects:
 3. **GitHub token** (optional) — classic PAT with `repo` and `workflow` scopes
 
 Provisioning installs the following inside the sandbox:
-- APT packages (neovim, git, curl, jq, tmux)
+- APT packages (gh, neovim, git, curl, jq, tmux)
 - nvm + Node.js (latest LTS)
 - [pi](https://github.com/earendil-works/pi-coding-agent) (global npm install)
 - `pi-llama-cpp` extension
@@ -83,7 +83,7 @@ Key settings in `sandbox` are overridable via environment variables:
 | `CPUS` | `2` | CPU count |
 | `MEMORY` | `2G` | Memory limit |
 | `OCI_UPPER_SIZE` | `8G` | OCI upper filesystem size |
-| `PACKAGES` | `neovim git curl jq tmux` | APT packages to install |
+| `PACKAGES` | `gh neovim git curl jq tmux` | APT packages to install |
 | `SHELL` | `/bin/bash` | Default shell for interactive sessions |
 | `GIT_USER_NAME` | `ChumpChief-bot` | Git user name |
 | `GIT_USER_EMAIL` | `chump.chief.bot@gmail.com` | Git user email |
