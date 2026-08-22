@@ -19,10 +19,10 @@ Host Machine ──(microsandbox)──► Sandboxed Dev Agent
 On a bare host, bootstrap everything in one line:
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/host_scripts/setup_host.sh | bash
+wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/host_scripts/setup_host | bash
 ```
 
-This installs `curl`, `git`, Node.js (via nvm), microsandbox, downloads scripts from `host_scripts/` into `~/bin`, and creates `~/git` for future projects. After setup, run `. ~/.bashrc` then `sandbox.sh provision`.
+This installs `curl`, `git`, Node.js (via nvm), microsandbox, downloads scripts from `host_scripts/` into `~/bin`, and creates `~/git` for future projects. After setup, run `. ~/.bashrc` then `sandbox provision`.
 
 ## Setup
 
@@ -31,7 +31,7 @@ This installs `curl`, `git`, Node.js (via nvm), microsandbox, downloads scripts 
 Run the one-liner from Quick Start, or clone the repo and run:
 
 ```bash
-./host_scripts/setup_host.sh
+./host_scripts/setup_host
 ```
 
 Either way, this updates system packages, installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Downloads scripts from `host_scripts/` into `~/bin` (added to PATH) and creates `~/git` for future projects. Re-run anytime to update.
@@ -39,7 +39,7 @@ Either way, this updates system packages, installs `curl`, `git`, `openssh-serve
 ### 2. Provision a sandbox
 
 ```bash
-sandbox.sh provision
+sandbox provision
 ```
 
 Runs an interactive prompt that collects:
@@ -59,8 +59,8 @@ Provisioning installs the following inside the sandbox:
 ### 3. Sync code into/out of the sandbox
 
 ```bash
-sandbox.sh sync-in <name>    # host current dir → sandbox ~/sync
-sandbox.sh sync-out <name>   # sandbox ~/sync → host current dir
+sandbox sync-in <name>    # host current dir → sandbox ~/sync
+sandbox sync-out <name>   # sandbox ~/sync → host current dir
 ```
 
 ## Day-to-Day
@@ -75,7 +75,7 @@ msb stop my-dev-agent
 
 ## Configuration
 
-Key settings in `sandbox.sh` are overridable via environment variables:
+Key settings in `sandbox` are overridable via environment variables:
 
 | Variable | Default | Description |
 |---|---|---|

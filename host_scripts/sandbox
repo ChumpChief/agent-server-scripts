@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# sandbox.sh — Provision a persistent Debian development sandbox
-#              using Microsandbox (msb CLI).
+# sandbox — Provision a persistent Debian development sandbox
+#           using Microsandbox (msb CLI).
 #
 # Usage:
-#   ./sandbox.sh provision          Create the sandbox and run initial setup (interactive)
-#   ./sandbox.sh sync-in <name>     Sync files from current dir into ~/sync in sandbox
-#   ./sandbox.sh sync-out <name>    Sync files from ~/sync in sandbox to current dir
+#   ./sandbox provision          Create the sandbox and run initial setup (interactive)
+#   ./sandbox sync-in <name>     Sync files from current dir into ~/sync in sandbox
+#   ./sandbox sync-out <name>    Sync files from ~/sync in sandbox to current dir
 #
 # All other operations use msb directly, e.g.:
 #   msb ssh dev-sandbox
@@ -136,7 +136,7 @@ cmd_provision() {
         error ""
         error "Options:"
         error "  msb remove ${SANDBOX_NAME}               # delete the existing sandbox"
-        error "  ./sandbox.sh provision                    # create with a different name"
+        error "  ./sandbox provision                       # create with a different name"
         exit 1
     fi
 
@@ -240,7 +240,7 @@ main() {
 
     if [[ "$cmd" == "provision" ]]; then
         if [[ $# -ne 0 ]]; then
-            die "Usage: ./sandbox.sh provision"
+            die "Usage: ./sandbox provision"
         fi
     fi
 
