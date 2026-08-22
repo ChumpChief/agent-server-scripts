@@ -3,6 +3,12 @@ set -euo pipefail
 
 echo "=== Microsandbox Host Setup ==="
 
+# 0. Update system packages
+echo "Updating system packages..."
+sudo apt-get update -qq
+sudo apt-get upgrade -y -qq
+echo "System packages updated."
+
 # 1. Install curl (needed for nvm install) and git
 if ! command -v curl &>/dev/null || ! command -v git &>/dev/null; then
   echo "Installing curl and git..."
