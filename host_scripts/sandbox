@@ -86,7 +86,7 @@ build_create_args() {
 
     # GitHub token secret (if provided)
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-        args+=(--secret "GITHUB_TOKEN@api.github.com,*.githubusercontent.com")
+        args+=(--secret "GITHUB_TOKEN@github.com,api.github.com,*.githubusercontent.com")
     fi
 
     printf '%s\n' "${args[@]}"
@@ -118,7 +118,7 @@ prompt_config() {
         while true; do
             HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/user 2>/dev/null)
             if [[ "${HTTP_CODE}" == "200" ]]; then
-                info "GITHUB_TOKEN valid -> api.github.com, *.githubusercontent.com"
+                info "GITHUB_TOKEN valid -> github.com, api.github.com, *.githubusercontent.com"
                 break
             else
                 info "GITHUB_TOKEN invalid (HTTP ${HTTP_CODE}). Please enter a new one, or Ctrl+C to abort."
