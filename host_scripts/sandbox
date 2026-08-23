@@ -210,10 +210,12 @@ cmd_provision() {
     info "Configuring git user identity..."
     msb exec "${SANDBOX_NAME}" -- bash -l -c 'git config --global user.name "${GIT_USER_NAME:-ChumpChief-bot}" && git config --global user.email "${GIT_USER_EMAIL:-chump.chief.bot@gmail.com}"'
 
-    # Configure gh CLI credential helper so git push/pull use GITHUB_TOKEN
+    # Set up GIT_ASKPASS so git push/pull use GITHUB_TOKEN automatically
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-        info "Configuring gh credential helper..."
-        msb exec "${SANDBOX_NAME}" -- bash -l -c 'echo "$GITHUB_TOKEN" | gh auth login --with-token && gh auth setup-git'
+        info "Configuring git ASKPASS for token auth..."
+        msb exec "${SANDBOX_NAME}" -- bash -l -c "printf '#!/bin/sh\necho \"\$GITHUB_TOKEN\"\n' > ~/git-askpass && chmod +x ~/git-askpass"
+        msb exec "${SANDBOX_NAME}" -- bash -l -c 'echo "export GIT_ASKPASS=\$HOME/git-askpass" >> ~/.bashrc'
+        msb exec "${SANDBOX_NAME}" -- bash -l -c 'echo "export GIT_TERMINAL_PROMPT=0" >> ~/.bashrc'
     fi
 
     # Configure llama.cpp server URL in pi settings
