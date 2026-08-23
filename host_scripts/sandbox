@@ -210,6 +210,12 @@ cmd_provision() {
     info "Configuring git user identity..."
     msb exec "${SANDBOX_NAME}" -- bash -l -c 'git config --global user.name "${GIT_USER_NAME:-ChumpChief-bot}" && git config --global user.email "${GIT_USER_EMAIL:-chump.chief.bot@gmail.com}"'
 
+    # Configure gh CLI credential helper so git push/pull use GITHUB_TOKEN
+    if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+        info "Configuring gh credential helper..."
+        msb exec "${SANDBOX_NAME}" -- bash -l -c 'echo "$GITHUB_TOKEN" | gh auth login --with-token && gh auth setup-git'
+    fi
+
     # Configure llama.cpp server URL in pi settings
     if [[ -n "${LLAMA_HOST:-}" ]]; then
         local LLAMA_URL="${LLAMA_HOST}:${LLAMA_PORT}"
