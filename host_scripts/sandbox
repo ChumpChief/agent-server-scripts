@@ -220,7 +220,7 @@ cmd_provision() {
     # Set sandbox workdir (SFTP/exec) and configure SSH login cd
     # Workdir must be set after the directory exists (create validates existence)
     info "Configuring default login directory..."
-    msb modify "${SANDBOX_NAME}" --workdir "${WORKDIR}"
+    msb modify "${SANDBOX_NAME}" --workdir "${WORKDIR}" --restart
     msb exec "${SANDBOX_NAME}" -- bash -l -c "echo \"cd ${WORKDIR}\" >> ~/.bashrc"
 
     # Configure gh CLI credential helper so git push/pull use GITHUB_TOKEN
