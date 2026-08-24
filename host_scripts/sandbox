@@ -34,7 +34,7 @@ PACKAGES="${PACKAGES:-gh neovim git curl jq tmux}"
 # Shell to use for interactive sessions
 SHELL="${SHELL:-/bin/bash}"
 
-# Default working directory (used by SFTP; SSH uses ~/.bashrc cd below)
+# Default working directory for SSH login, SFTP, and exec
 WORKDIR="${WORKDIR:-~/git}"
 
 # ──────────────────────────────────────────────────────────────
@@ -76,7 +76,6 @@ build_create_args() {
     args+=(-m "${MEMORY}")
     args+=(--oci-upper-size "${OCI_UPPER_SIZE}")
     args+=(--shell "${SHELL}")
-    args+=(--workdir "${WORKDIR}")
 
     # Base network rules
     for rule in "${BASE_NET_RULES[@]}"; do
@@ -218,8 +217,10 @@ cmd_provision() {
     info "Creating ~/git directory..."
     msb exec "${SANDBOX_NAME}" -- bash -l -c 'mkdir -p ~/git'
 
-    # Default to WORKDIR on SSH login
+    # Set sandbox workdir (SFTP/exec) and configure SSH login cd
+    # Workdir must be set after the directory exists (create validates existence)
     info "Configuring default login directory..."
+    msb modify "${SANDBOX_NAME}" --workdir "${WORKDIR}"
     msb exec "${SANDBOX_NAME}" -- bash -l -c "echo \"cd ${WORKDIR}\" >> ~/.bashrc"
 
     # Configure gh CLI credential helper so git push/pull use GITHUB_TOKEN
