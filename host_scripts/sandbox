@@ -233,7 +233,7 @@ cmd_provision() {
     # Install global AGENTS.md for pi
     info "Installing pi AGENTS.md..."
     msb exec "${SANDBOX_NAME}" -- bash -l -c 'mkdir -p ~/.pi/agent'
-    msb cp -q ~/sandbox_resources/AGENTS.md "${SANDBOX_NAME}:~/.pi/agent/AGENTS.md"
+    msb cp -q ~/sandbox_resources/AGENTS.md "${SANDBOX_NAME}:/root/.pi/agent/AGENTS.md"
 
     # Configure llama.cpp server URL in pi settings
     if [[ -n "${LLAMA_HOST:-}" ]]; then
