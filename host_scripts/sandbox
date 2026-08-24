@@ -34,7 +34,7 @@ PACKAGES="${PACKAGES:-gh neovim git curl jq tmux}"
 # Shell to use for interactive sessions
 SHELL="${SHELL:-/bin/bash}"
 
-# Default working directory (set via msb modify; SSH uses ~/.bashrc cd below)
+# Default working directory for SSH login, SFTP, and exec
 WORKDIR="${WORKDIR:-~/git}"
 
 # ──────────────────────────────────────────────────────────────
