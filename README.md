@@ -55,6 +55,7 @@ Provisioning installs the following inside the sandbox:
 - `pi-llama-cpp` extension
 - Git user identity (configurable via env vars)
 - llama.cpp server URL in pi settings
+- Default working directory set to `~/git` on SSH login
 
 ### 3. Sync code into/out of the sandbox
 
@@ -85,6 +86,7 @@ Key settings in `sandbox` are overridable via environment variables:
 | `OCI_UPPER_SIZE` | `8G` | OCI upper filesystem size |
 | `PACKAGES` | `gh neovim git curl jq tmux` | APT packages to install |
 | `SHELL` | `/bin/bash` | Default shell for interactive sessions |
+| `WORKDIR` | `~/git` | Default working directory (SFTP) / SSH login cd target |
 | `GIT_USER_NAME` | `ChumpChief-bot` | Git user name |
 | `GIT_USER_EMAIL` | `chump.chief.bot@gmail.com` | Git user email |
 
