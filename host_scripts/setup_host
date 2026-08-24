@@ -85,12 +85,26 @@ else
   done
 fi
 
+# 6. Download sandbox resources from GitHub into ~/sandbox_resources
+echo "Downloading sandbox resources..."
+mkdir -p ~/sandbox_resources
+RESOURCES=$(curl -s https://api.github.com/repos/ChumpChief/agent-server-scripts/contents/sandbox_resources | jq -r '.[].name // empty')
+if [[ -z "$RESOURCES" ]]; then
+  echo "WARNING: Could not fetch sandbox resource list from GitHub. Skipping."
+else
+  for resource in $RESOURCES; do
+    wget -qO ~/sandbox_resources/"$resource" "https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/sandbox_resources/$resource"
+    echo "Downloaded $resource -> ~/sandbox_resources/$resource"
+  done
+fi
+
 echo ""
 echo "=== Host setup complete ==="
-echo "  Node.js:  $(node --version)"
-echo "  npm:      $(npm --version)"
-echo "  nvm:      $(nvm --version)"
-echo "  Scripts:  ~/bin"
+echo "  Node.js:         $(node --version)"
+echo "  npm:             $(npm --version)"
+echo "  nvm:             $(nvm --version)"
+echo "  Scripts:         ~/bin"
+echo "  Sandbox resources: ~/sandbox_resources"
 echo ""
 echo "To make these tools available in your current shell, run:"
 echo "  . ~/.bashrc"
