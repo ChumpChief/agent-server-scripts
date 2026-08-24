@@ -85,9 +85,6 @@ else
   done
 fi
 
-# 6. Create ~/git for future projects
-mkdir -p ~/git
-
 echo ""
 echo "=== Host setup complete ==="
 echo "  Node.js:  $(node --version)"

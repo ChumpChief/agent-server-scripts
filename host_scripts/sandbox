@@ -210,6 +210,10 @@ cmd_provision() {
     info "Configuring git user identity..."
     msb exec "${SANDBOX_NAME}" -- bash -l -c 'git config --global user.name "${GIT_USER_NAME:-ChumpChief-bot}" && git config --global user.email "${GIT_USER_EMAIL:-chump.chief.bot@gmail.com}"'
 
+    # Create ~/git directory for projects
+    info "Creating ~/git directory..."
+    msb exec "${SANDBOX_NAME}" -- bash -l -c 'mkdir -p ~/git'
+
     # Configure gh CLI credential helper so git push/pull use GITHUB_TOKEN
     # gh will use GITHUB_TOKEN from the environment (injected via --secret)
     if [[ -n "${GITHUB_TOKEN:-}" ]]; then

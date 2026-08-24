@@ -22,7 +22,7 @@ On a bare host, bootstrap everything in one line:
 wget -qO- https://raw.githubusercontent.com/ChumpChief/agent-server-scripts/main/host_scripts/setup_host | bash
 ```
 
-This installs `curl`, `git`, `openssh-server`, Node.js (via nvm), microsandbox, downloads scripts from the repo into `~/bin`, and creates `~/git` for future projects. After setup, run `. ~/.bashrc` then `sandbox provision`.
+This installs `curl`, `git`, `openssh-server`, Node.js (via nvm), microsandbox, and downloads scripts from the repo into `~/bin`. After setup, run `. ~/.bashrc` then `sandbox provision`.
 
 ## Setup
 
@@ -34,7 +34,7 @@ Run the one-liner from Quick Start, or clone the repo and run:
 ./host_scripts/setup_host
 ```
 
-Either way, this updates system packages, installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Downloads the latest scripts from the repo into `~/bin` (added to PATH) and creates `~/git` for future projects. Re-run anytime to update.
+Either way, this updates system packages, installs `curl`, `git`, `openssh-server`, Node.js (via nvm, latest LTS), and microsandbox globally. Downloads the latest scripts from the repo into `~/bin` (added to PATH). Re-run anytime to update.
 
 ### 2. Provision a sandbox
 
